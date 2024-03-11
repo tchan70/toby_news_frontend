@@ -1,0 +1,41 @@
+.articles-container {
+  padding: 20px;
+}
+
+.articles-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.article-card {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.article-card-header {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.article-title {
+  margin: 0;
+}
+
+.article-meta {
+  color: #888888;
+}
+
+.article-content {
+  padding: 10px;
+}
+
+.article-actions {
+  margin-top: 10px;
+}
+
+.article-actions button {
+  margin-right: 10px;
+}
+
+
