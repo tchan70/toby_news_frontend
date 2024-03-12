@@ -24,3 +24,10 @@ export const getCommentsByArticleId = (article_id) =>{
     return res.data.comments
   })
 }
+
+export const patchArticleVotesById = (votes, article_id) =>{
+  return myApi.patch(`/articles/${article_id}`, votes)
+  .then((res) =>{
+    return res.data.article
+  })
+}

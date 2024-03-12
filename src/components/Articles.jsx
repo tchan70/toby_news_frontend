@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAllArticles } from "../utils/api"
+import { getAllArticles, patchArticleVotesById } from "../utils/api"
 import { Link } from "react-router-dom"
 import "./css/articles.css"
 
@@ -27,22 +27,56 @@ const Articles = () =>{
     return date.toLocaleString()
   }
 
+  const addUpvote = (articleId) =>{
+    const votes = {inc_votes: 1}
+    patchArticleVotesById(votes, articleId)
+    .then((updatedArticle) =>{
+      setArticles((articles) =>
+        articles.map((article) =>
+          article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+        )
+      )
+    })
+    .catch((err) =>{
+      console.log(err, "this is the error")
+    })
+  }
+
+  const removeUpvote = (articleId) =>{
+    const votes = {inc_votes: -1}
+    patchArticleVotesById(votes, articleId)
+    .then((updatedArticle) =>{
+      setArticles((articles) =>
+        articles.map((article) =>
+          article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+        )
+      )
+    })
+    .catch((err) =>{
+      console.log(err, "this is the error")
+    })
+  }
+
+
   return (
     <div className="articles-container">
       <h2>Articles</h2>
       <ul className="articles-list">
         {articles.map((article) => (
           <li key={article.article_id} className="article-card">
-            <Link to={`/articles/${article.article_id}`} className="article-link">
-              <div className="article-content">
-                <h3 className="article-title">{article.title}</h3>
-                <h4 className="article-topic">{article.topic.charAt(0).toUpperCase() + article.topic.slice(1).toLowerCase()}</h4>
-                <img className="article-image" src={article.article_img_url} alt="Article" />
-                <p className="article-date">Posted at: {formatDate(article.created_at)}</p>
-                <p className="article-comment-count">Comments: {article.comment_count}</p>
-                <p className="article-votes">Upvotes: {article.votes}</p>
-              </div>
-            </Link>
+            <div className="article-content">
+              <h3 className="article-title">{article.title}</h3>
+              <h4 className="article-topic">{article.topic.charAt(0).toUpperCase() +article.topic.slice(1).toLowerCase()}</h4>
+              <img className="article-image" src={article.article_img_url} alt="Article"/>
+              <p className="article-date">Posted at: {formatDate(article.created_at)}</p>
+              <p className="article-comment-count">Comments: {article.comment_count}</p>
+              <p className="article-upvotes">Upvotes: {article.votes}</p>
+              <Link to={`/articles/${article.article_id}`} className="read-more-link">Read More</Link>
+            </div>
+            <div className="article-actions">
+              <button onClick={() => addUpvote(article.article_id)}>Upvote</button>
+              <button onClick={() => removeUpvote(article.article_id)}>Downvote</button>
+            </div>
           </li>
         ))}
       </ul>
