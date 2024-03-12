@@ -1,0 +1,57 @@
+.article-page {
+  padding: 20px;
+}
+
+.article-body {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.article-title {
+  margin-top: 0;
+}
+
+.article-topic {
+  color: #888888;
+}
+
+.article-content {
+  margin: 10px 0;
+}
+
+.article-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.article-date {
+  color: #888888;
+  margin-bottom: 5px;
+}
+
+.article-votes {
+  color: #888888;
+}
+
+.comments-container {
+  margin-top: 20px;
+}
+
+.comment {
+  display: flex;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment p {
+  margin: 5px 0;
+}
+
+.comment h5 {
+  margin: 5px 0;
+  font-style: italic;
+  color: #888888;
+}
