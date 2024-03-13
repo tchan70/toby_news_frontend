@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import "./css/articles.css"
 
 
-const Articles = () =>{
+const Articles = ({ hasVoted, setHasVoted }) =>{
   const [articles, setArticles] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -24,37 +24,43 @@ const Articles = () =>{
 
   const formatDate = (dateString) =>{
     const date = new Date(dateString)
-    return date.toLocaleString()
+    return date.toLocaleDateString()
   }
 
   const addUpvote = (articleId) =>{
-    const votes = {inc_votes: 1}
-    patchArticleVotesById(votes, articleId)
-    .then((updatedArticle) =>{
-      setArticles((articles) =>
-        articles.map((article) =>
-          article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+    if(!hasVoted){
+      const votes = {inc_votes: 1}
+      patchArticleVotesById(votes, articleId)
+      .then((updatedArticle) =>{
+        setArticles((articles) =>
+          articles.map((article) =>
+            article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+          )
         )
-      )
-    })
-    .catch((err) =>{
-      console.log(err, "this is the error")
-    })
+        setHasVoted(true)
+      })
+      .catch((err) =>{
+        console.log(err, "this is the error")
+      })
+    }
   }
 
   const removeUpvote = (articleId) =>{
-    const votes = {inc_votes: -1}
-    patchArticleVotesById(votes, articleId)
-    .then((updatedArticle) =>{
-      setArticles((articles) =>
-        articles.map((article) =>
-          article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+    if(!hasVoted){
+      const votes = {inc_votes: -1}
+      patchArticleVotesById(votes, articleId)
+      .then((updatedArticle) =>{
+        setArticles((articles) =>
+          articles.map((article) =>
+            article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+          )
         )
-      )
-    })
-    .catch((err) =>{
-      console.log(err, "this is the error")
-    })
+        setHasVoted(true)
+      })
+      .catch((err) =>{
+        console.log(err, "this is the error")
+      })
+    }
   }
 
 
@@ -68,14 +74,14 @@ const Articles = () =>{
               <h3 className="article-title">{article.title}</h3>
               <h4 className="article-topic">{article.topic.charAt(0).toUpperCase() +article.topic.slice(1).toLowerCase()}</h4>
               <img className="article-image" src={article.article_img_url} alt="Article"/>
-              <p className="article-date">Posted at: {formatDate(article.created_at)}</p>
-              <p className="article-comment-count">Comments: {article.comment_count}</p>
+              <p className="article-date">Posted at: {formatDate(article.created_at)} </p>
+              <p className="article-comment-count">Comments: {article.comment_count} </p>
               <p className="article-upvotes">Upvotes: {article.votes}</p>
               <Link to={`/articles/${article.article_id}`} className="read-more-link">Read More</Link>
             </div>
             <div className="article-actions">
-              <button onClick={() => addUpvote(article.article_id)}>Upvote</button>
-              <button onClick={() => removeUpvote(article.article_id)}>Downvote</button>
+              <button onClick={() => addUpvote(article.article_id)} disabled={hasVoted}>Upvote</button>
+              <button onClick={() => removeUpvote(article.article_id)} disabled={hasVoted}>Downvote</button>
             </div>
           </li>
         ))}
