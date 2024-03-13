@@ -40,7 +40,7 @@
 }
 
 .separator {
-  margin: 20px 0;
+  margin: 20px;
   border-top: 1px solid #ccc;
 }
 
@@ -56,11 +56,22 @@
 }
 
 .comment p {
-  margin: 5px 0;
+  margin: 5px;
 }
 
 .comment h5 {
-  margin: 5px 0;
+  margin: 5px;
   font-style: italic;
   color: #888888;
+}
+
+
+.comment-votes {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.comment-date {
+  padding-right: 5px;
+  padding-left: 5px;
 }
