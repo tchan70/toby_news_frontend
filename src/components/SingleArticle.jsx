@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { getArticleById, getCommentsByArticleId, patchArticleVotesById, postCommentByArticleId } from "../utils/api"
+import { deleteCommentById, getArticleById, getCommentsByArticleId, patchArticleVotesById, postCommentByArticleId } from "../utils/api"
 import { useParams } from "react-router-dom"
 import "./css/singleArticle.css"
 import UserContext from "./User";
@@ -10,6 +10,7 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
   const [isLoading, setIsLoading] = useState(true)
   const [commentBody, setCommentBody] = useState("")
   const [successMessage, setSuccessMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
   const { loggedInUser } = useContext(UserContext)
   let { articleId } = useParams()
   
@@ -40,7 +41,6 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
     const date = new Date(dateString)
     return date.toLocaleDateString()
   }
-
   
   const addUpvote = (articleId) =>{
     if(!hasVoted){
@@ -48,7 +48,7 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
       patchArticleVotesById(votes, articleId)
       .then((updatedArticle) =>{
         setArticle((article) =>
-            article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+        article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
         )
         setHasVoted(true)
       })
@@ -57,14 +57,14 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
       })
     }
   }
-
+  
   const removeUpvote = (articleId) =>{
     if(!hasVoted){
       const votes = {inc_votes: -1}
       patchArticleVotesById(votes, articleId)
       .then((updatedArticle) =>{
         setArticle((article) =>
-            article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
+        article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
         )
         setHasVoted(true)
       })
@@ -76,9 +76,10 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
 
   const handleSubmit = (event) =>{
     event.preventDefault()
-
+    
     if(commentBody.length === 0){
-      return alert("Please enter a comment.")
+      setErrorMessage("Please enter a comment.")
+      return 
     }
 
     event.target.querySelector(".comment-submit-button").disabled = true
@@ -91,18 +92,46 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
       "author": loggedInUser.username
     }
 
-    setComments((prevComments) => [...prevComments, newComment])
-    setCommentBody("")
+    setSuccessMessage("Comment posting in progress...")
 
     postCommentByArticleId(newComment, articleId)
     .then((response) =>{
-      console.log(response)
+      console.log(response, "this is the api response")
       setSuccessMessage("Comment posted sucessfully!")
+      setErrorMessage("")
+      setComments([...comments, response])
+      setCommentBody("")
       event.target.querySelector(".comment-submit-button").disabled = false
     })
     .catch((err) =>{
       console.log(err, "this is the error")
+      setErrorMessage("Failed to post comment. Please try again.")
       event.target.querySelector(".comment-submit-button").disabled = false
+    })
+  }
+
+  const removeComment = (comment_id) =>{
+    const commentIndex = comments.findIndex((comment) => comment.comment_id === comment_id)
+
+    setComments((prevComments) => 
+      prevComments.map((comment, index) => 
+        index === commentIndex ? { ...comment, isDeleting: true } : comment
+      )
+    )
+
+    deleteCommentById(comment_id)
+    .then(() =>{
+      setComments(comments.filter((comment) => comment.comment_id !== comment_id))
+    })
+    .catch((err) =>{
+      console.log(err, "this is the error")
+
+      setComments((prevComments) => 
+        prevComments.map((comment, index) => 
+          index === commentIndex ? { ...comment, isDeleting: false } : comment
+        )
+      )
+      setErrorMessage("Failed to delete comment. Please try again.")
     })
   }
 
@@ -122,19 +151,6 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
         </div>
     </div>
     <hr className="separator" />
-    <h3 className="comments-header">Comments</h3>
-    {comments && (
-      <div className="comments-container">
-        {comments.map((comment) => (
-          <div key={comment.comment_id} className="comment">
-            <p className="comment-body">{comment.body}</p>
-            <p className="comment-votes">Upvotes: {comment.votes}</p>
-            <p className="comment-date">Posted at: {formatDate(comment.created_at)}</p>
-            <h5 className="comment-author"> {comment.author}</h5>
-          </div>
-        ))}
-      </div>
-    )}
     <h3 className="">Add a comment:</h3>
     <div className="add-comment-box">
       <form onSubmit={handleSubmit}>
@@ -146,6 +162,25 @@ const SingleArticle = ({ hasVoted, setHasVoted }) =>{
       </form>
     </div>
     {successMessage && <p className="success-message">{successMessage}</p>}
+    {errorMessage && <p className="error-message">{errorMessage}</p>}
+    <h3 className="comments-header">Comments</h3>
+    {comments && (
+      <div className="comments-container">
+        {comments.map((comment) => (
+          <div key={comment.comment_id} className="comment">
+            <p className="comment-body">{comment.body}</p>
+            <p className="comment-votes">Upvotes: {comment.votes}</p>
+            <p className="comment-date">Posted at: {formatDate(comment.created_at)}</p>
+            <h5 className="comment-author"> {comment.author}</h5>
+            {loggedInUser.username === comment.author && 
+            (<button className="delete-comment-button" onClick={() => removeComment(comment.comment_id)} disabled={comment.isDeleting}> 
+            {comment.isDeleting ? "Deleting..." : "Delete Comment"} 
+            </button>
+          )}
+          </div>
+        ))}
+      </div>
+    )}
   </div>
   );
 };
