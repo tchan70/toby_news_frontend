@@ -50,5 +50,9 @@
   text-decoration: none;
 }
 
+.read-more-link:hover {
+  text-decoration: underline;
+}
+
 
 

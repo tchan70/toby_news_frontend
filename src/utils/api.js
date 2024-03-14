@@ -4,8 +4,9 @@ const myApi = axios.create({
   baseURL: 'https://toby-news.onrender.com/api'
 }) 
 
-export const getAllArticles = () =>{
-  return myApi.get(`/articles`)
+export const getAllArticles = (topic) =>{
+  const url = topic ? `/articles?topic=${topic}` : `/articles`
+  return myApi.get(url)
   .then((res) =>{
     return res.data.articles
   })
@@ -41,4 +42,11 @@ export const postCommentByArticleId = (comment, article_id) =>{
 
 export const deleteCommentById = (comment_id) =>{
   return myApi.delete(`/comments/${comment_id}`)
+}
+
+export const getTopics = () =>{
+  return myApi.get(`/topics`)
+  .then((res) =>{
+    return res.data.topics
+  })
 }

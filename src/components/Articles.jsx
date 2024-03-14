@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react"
 import { getAllArticles, patchArticleVotesById } from "../utils/api"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import "./css/articles.css"
 
 
 const Articles = ({ hasVoted, setHasVoted }) =>{
   const [articles, setArticles] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const topic = searchParams.get("topic")
 
   useEffect(() =>{
     setIsLoading(true)
-    getAllArticles()
+    getAllArticles(topic)
     .then((articles) =>{
       setArticles(articles)
       setIsLoading(false)
@@ -18,7 +20,7 @@ const Articles = ({ hasVoted, setHasVoted }) =>{
     .catch((err) =>{
       console.log(err, "this is the error")
     })
-  }, [])
+  }, [topic])
 
   if (isLoading) return <p>Loading...</p>
 
