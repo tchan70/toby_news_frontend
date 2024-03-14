@@ -23,6 +23,11 @@ const Comments = ({ articleId }) =>{
       })
   }
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString()
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
 
@@ -88,7 +93,7 @@ const Comments = ({ articleId }) =>{
             <div key={comment.comment_id} className="comment">
               <p className="comment-body">{comment.body}</p>
               <p className="comment-votes">Upvotes: {comment.votes}</p>
-              <p className="comment-date">Posted at: {comment.created_at}</p>
+              <p className="comment-date">Posted at: {formatDate(comment.created_at)}</p>
               <h5 className="comment-author">Author: {comment.author}</h5>
               {loggedInUser.username === comment.author && 
               (<button onClick={() => removeComment(comment.comment_id)}>Delete Comment</button>)}

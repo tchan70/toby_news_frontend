@@ -9,7 +9,6 @@ const Topics = () =>{
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() =>{
-
     setIsLoading(true)
     getTopics()
     .then((topics) =>{
@@ -19,7 +18,9 @@ const Topics = () =>{
     .catch((err) =>{
       console.log(err, "this is the error")
     })
-  })
+  }, [])
+
+  if (isLoading) return <p>Loading...</p>
 
   return (
     <div className="topics-container">
