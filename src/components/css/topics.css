@@ -1,0 +1,40 @@
+.topics-container {
+  padding: 20px;
+}
+
+.topics-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.topic-card {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.topic-content {
+  padding: 10px;
+}
+
+.topic-name {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.topic-description {
+  margin-top: 5px;
+  color: #666;
+}
+
+.view-topic-articles-link {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.view-topic-articles-link:hover {
+  text-decoration: underline;
+}
