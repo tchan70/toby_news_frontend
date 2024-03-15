@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import "./css/sorting.css"
+import { useSearchParams } from "react-router-dom";
 
 const Sorting = ({ articles, setArticles }) => {
+  const [searchParams, setSearchParams] = useSearchParams()
   const [sortCriteria, setSortCriteria] = useState("created_at");
   const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("sort_by", sortCriteria);
+    newSearchParams.set("order", sortOrder);
+    setSearchParams(newSearchParams, { replace: true })
+
     const sortArticles = () => {
       const sortedArticles = [...articles].sort((a, b) => {
         let valueA = typeof a[sortCriteria] === 'string' ? a[sortCriteria].toLowerCase() : a[sortCriteria]

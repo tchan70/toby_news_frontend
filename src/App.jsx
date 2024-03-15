@@ -8,6 +8,7 @@ import SingleArticle from './components/SingleArticle'
 import UserContext from './components/User'
 import Topics from './components/Topics'
 import VoteContext from './components/Vote'
+import NotFound from './components/NotFound.jsx'
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState({
@@ -28,6 +29,7 @@ function App() {
         <Route path="/articles" element={<Articles/> } />
         <Route path="/articles/:articleId" element={<SingleArticle/> } />
         <Route path="/topics" element={<Topics/> } />
+        <Route path="*" element={<NotFound/> } />
       </Routes>
       </VoteContext.Provider>
       </UserContext.Provider>

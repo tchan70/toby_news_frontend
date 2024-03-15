@@ -5,12 +5,13 @@ import  Sorting from "./Sorting.jsx"
 import "./css/articles.css"
 import VoteContext from "./Vote.jsx"
 import useVoteHandler from "./VoteHandler.jsx"
-
+import NotFound from "./NotFound.jsx"
 
 const Articles = () =>{
   const [articles, setArticles] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchParams, setSearchParams] = useSearchParams()
+  const [error, setError] = useState(null)
   const { votes } = useContext(VoteContext)
   const topic = searchParams.get("topic")
 
@@ -25,8 +26,11 @@ const Articles = () =>{
     })
     .catch((err) =>{
       console.log(err, "this is the error")
+      setError(err)
     })
   }, [topic])
+
+  if (error) return <NotFound/>
 
   if (isLoading) return <p>Loading...</p>
 
@@ -48,7 +52,7 @@ const Articles = () =>{
               <img className="article-image" src={article.article_img_url} alt="Article"/>
               <p className="article-date">Posted at: {formatDate(article.created_at)} </p>
               <p className="article-comment-count">Comments: {article.comment_count} </p>
-              <p className="article-upvotes">Upvotes: {article.votes}</p>
+              <p className="article-upvotes">Votes: {article.votes}</p>
               <Link to={`/articles/${article.article_id}`} className="read-more-link">Read More</Link>
             </div>
             <div className="article-actions">

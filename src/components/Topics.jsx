@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import { getTopics } from "../utils/api"
 import { Link } from "react-router-dom"
 import "./css/topics.css"
+import NotFound from "./NotFound"
 
 
 const Topics = () =>{
   const [topics, setTopics] = useState([])
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() =>{
@@ -17,8 +19,11 @@ const Topics = () =>{
     })
     .catch((err) =>{
       console.log(err, "this is the error")
+      setError(err)
     })
   }, [])
+
+  if (error) return <NotFound/>
 
   if (isLoading) return <p>Loading...</p>
 

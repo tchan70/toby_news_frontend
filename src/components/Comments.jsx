@@ -32,7 +32,7 @@ const Comments = ({ articleId }) =>{
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (commentBody.length === 0) {
+    if (commentBody.trim().length === 0) {
       setErrorMessage("Please enter a comment.");
       return
     }
@@ -49,7 +49,7 @@ const Comments = ({ articleId }) =>{
 
     postCommentByArticleId(newComment, articleId)
       .then((response) => {
-        setSuccessMessage("Comment posted successfully! Refresh to see your comment.")
+        setSuccessMessage("Comment posted successfully!")
         setErrorMessage("")
         setComments([...comments, response])
         setCommentBody("")
@@ -76,7 +76,7 @@ const Comments = ({ articleId }) =>{
       <h3>Add a comment:</h3>
       <form onSubmit={handleSubmit} className="add-comment-form">
         <label htmlFor="comment-body">Enter a comment:</label>
-        <input value={commentBody} id="comment-body" name="new-comment-body" type="text" onChange={(event) => setCommentBody(event.target.value)} className="comment-input" />
+        <textarea value={commentBody} id="comment-body" name="new-comment-body" className="comment-textarea" onChange={(event) => setCommentBody(event.target.value)} />
         <button type="submit" className="comment-submit-button">Add Comment</button>
       </form>
       {successMessage && <p className="success-message">{successMessage}</p>}

@@ -5,21 +5,30 @@ import "./css/singleArticle.css"
 import Comments from "./Comments"
 import VoteContext from "./Vote"
 import useVoteHandler from "./VoteHandler"
+import NotFound from "./NotFound"
 
 const SingleArticle = () => {
   const [article, setArticle] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
   const { votes } = useContext(VoteContext)
   let { articleId } = useParams()
 
   const handleVote = useVoteHandler(setArticle, true)
 
   useEffect(() => {
-    Promise.all([getArticleById(articleId)]).then(([article]) => {
+    Promise.all([getArticleById(articleId)])
+    .then(([article]) => {
       setArticle(article)
       setIsLoading(false)
     })
+    .catch((err) =>{
+      console.log(err, "this is the error")
+      setError(err)
+    })
   }, [articleId])
+
+  if (error) return <NotFound/>
 
   if (isLoading) return <p>Loading...</p>
 
@@ -36,7 +45,7 @@ const SingleArticle = () => {
         <img src={article.article_img_url} className="article-image" alt={article.title} />
         <p className="article-content">{article.body}</p>
         <p className="article-date">Posted at: {formatDate(article.created_at)}</p>
-        <p className="article-votes">Upvotes: {article.votes}</p>
+        <p className="article-votes">Votes: {article.votes}</p>
         <p className="article-author">Posted by: {article.author}</p>
         <div className="article-actions">
         <button onClick={() => handleVote(articleId, 1)} disabled={votes[articleId]}>Upvote</button>
