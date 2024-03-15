@@ -1,5 +1,7 @@
 .articles-container {
   padding: 20px;
+  background-color: #1a1a1a; 
+  color: #d7dadc;
 }
 
 .articles-list {
@@ -8,51 +10,58 @@
 }
 
 .article-card {
-  border: 1px solid #ccc;
+  background-color: #292929;
+  border: none;
   margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.2s;
 }
 
-.article-card-header {
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-}
-
-.article-title {
-  margin: 0;
-}
-
-.article-content {
-  padding: 5x;
+.article-card:hover {
+  background-color: #2e2e2e;
 }
 
 .article-actions {
   display: flex;
   justify-content: center;
-  margin-top: 5px;
+  align-items: center;
+  padding: 20px;
+  gap: 10px; 
 }
 
 .article-actions button {
+  background-color: transparent;
+  color: #d7dadc;
+  border: 1px solid #d7dadc; 
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
   display: flex;
-  justify-content: center;
-  margin-right: 10px;
+  align-items: center;
+  gap: 5px; 
+}
+
+.article-actions button[disabled],
+.article-actions button[disabled]:hover {
+  color: #555;
+  border-color: #555; 
+  cursor: not-allowed;
+}
+
+.article-actions button::before,
+.article-actions button::after {
+  display: none; 
 }
 
 .read-more-link {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  padding: 5px 10px;
-  border-radius: 5px;
-  margin-top: 10px;
+  color: #0079d3;
+
+  padding-bottom: 10px;
+  margin-bottom: 10px;
   text-decoration: none;
 }
 
 .read-more-link:hover {
   text-decoration: underline;
 }
-
-
-

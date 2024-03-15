@@ -1,77 +1,55 @@
 .article-page {
   padding: 20px;
+  background-color: #1a1a1a; 
+  color: #d7dadc;
 }
 
 .article-body {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
+  background-color: #292929;
+  border-radius: 4px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.article-title {
-  margin-top: 0;
-}
-
-.article-topic {
-  color: #888888;
-}
-
-.article-content {
-  margin: 10px 0;
+.article-title, .article-topic, .article-date, .article-votes, .article-author {
+  color: #ffffff;
 }
 
 .article-image {
   max-width: 100%;
   height: auto;
-  margin-bottom: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
 
-.article-date {
-  color: #888888;
-  margin-bottom: 5px;
-}
-
-.article-votes {
-  color: #888888;
-}
-
-.comments-header {
-  margin-top: 20px;
-}
-
-.separator {
-  margin: 20px;
-  border-top: 1px solid #ccc;
-}
-
-.comments-container {
-  margin-top: 20px;
-}
-
-.comment {
+.article-actions {
   display: flex;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; 
 }
 
-.comment p {
-  margin: 5px;
+.article-actions button {
+  background-color: transparent;
+  color: #d7dadc;
+  border: 1px solid #d7dadc; 
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px; 
 }
 
-.comment h5 {
-  margin: 5px;
-  font-style: italic;
-  color: #888888;
+.article-actions button[disabled],
+.article-actions button[disabled]:hover {
+  color: #555;
+  border-color: #555; 
+  cursor: not-allowed;
 }
 
-
-.comment-votes {
-  padding-right: 5px;
-  padding-left: 5px;
-}
-
-.comment-date {
-  padding-right: 5px;
-  padding-left: 5px;
+.article-actions button::before,
+.article-actions button::after {
+  display: none; 
 }

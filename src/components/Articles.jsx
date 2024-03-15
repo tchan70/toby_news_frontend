@@ -1,14 +1,20 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { getAllArticles, patchArticleVotesById } from "../utils/api"
 import { Link, useSearchParams } from "react-router-dom"
+import  Sorting from "./Sorting.jsx"
 import "./css/articles.css"
+import VoteContext from "./Vote.jsx"
+import useVoteHandler from "./VoteHandler.jsx"
 
 
-const Articles = ({ hasVoted, setHasVoted }) =>{
+const Articles = () =>{
   const [articles, setArticles] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchParams, setSearchParams] = useSearchParams()
+  const { votes } = useContext(VoteContext)
   const topic = searchParams.get("topic")
+
+  const handleVote = useVoteHandler(setArticles)
 
   useEffect(() =>{
     setIsLoading(true)
@@ -29,46 +35,10 @@ const Articles = ({ hasVoted, setHasVoted }) =>{
     return date.toLocaleDateString()
   }
 
-  const addUpvote = (articleId) =>{
-    if(!hasVoted){
-      const votes = {inc_votes: 1}
-      patchArticleVotesById(votes, articleId)
-      .then((updatedArticle) =>{
-        setArticles((articles) =>
-          articles.map((article) =>
-            article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
-          )
-        )
-        setHasVoted(true)
-      })
-      .catch((err) =>{
-        console.log(err, "this is the error")
-      })
-    }
-  }
-
-  const removeUpvote = (articleId) =>{
-    if(!hasVoted){
-      const votes = {inc_votes: -1}
-      patchArticleVotesById(votes, articleId)
-      .then((updatedArticle) =>{
-        setArticles((articles) =>
-          articles.map((article) =>
-            article.article_id === updatedArticle.article_id ? {...article, votes: updatedArticle.votes} : article
-          )
-        )
-        setHasVoted(true)
-      })
-      .catch((err) =>{
-        console.log(err, "this is the error")
-      })
-    }
-  }
-
-
   return (
     <div className="articles-container">
       <h2>Articles</h2>
+      <Sorting articles={articles} setArticles={setArticles} />
       <ul className="articles-list">
         {articles.map((article) => (
           <li key={article.article_id} className="article-card">
@@ -82,8 +52,8 @@ const Articles = ({ hasVoted, setHasVoted }) =>{
               <Link to={`/articles/${article.article_id}`} className="read-more-link">Read More</Link>
             </div>
             <div className="article-actions">
-              <button onClick={() => addUpvote(article.article_id)} disabled={hasVoted}>Upvote</button>
-              <button onClick={() => removeUpvote(article.article_id)} disabled={hasVoted}>Downvote</button>
+              <button onClick={() => handleVote(article.article_id, 1)} disabled={votes[article.article_id]}>Upvote</button>
+              <button onClick={() => handleVote(article.article_id, -1)} disabled={votes[article.article_id]}>Downvote</button>
             </div>
           </li>
         ))}

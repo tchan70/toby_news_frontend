@@ -1,5 +1,7 @@
 .topics-container {
   padding: 20px;
+  background-color: #1a1a1a; 
+  color: #d7dadc; 
 }
 
 .topics-list {
@@ -8,31 +10,28 @@
 }
 
 .topic-card {
-  border: 1px solid #ccc;
+  background-color: #292929;
   margin-bottom: 20px;
-  border-radius: 5px;
-}
-
-.topic-content {
-  padding: 10px;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 .topic-name {
+  color: #ffffff;
   margin: 0;
   font-size: 1.2rem;
 }
 
 .topic-description {
+  color: #818384;
   margin-top: 5px;
-  color: #666;
 }
 
 .view-topic-articles-link {
-  display: block;
-  text-align: center;
-  margin-top: 10px;
-  color: #007bff;
+  color: #0079d3;
   text-decoration: none;
+  margin-top: 10px;
 }
 
 .view-topic-articles-link:hover {

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { deleteCommentById, getCommentsByArticleId, postCommentByArticleId } from "../utils/api"
 import UserContext from "./User"
+import "./css/comments.css"
 
 const Comments = ({ articleId }) =>{
   const [comments, setComments] = useState([])
@@ -48,7 +49,7 @@ const Comments = ({ articleId }) =>{
 
     postCommentByArticleId(newComment, articleId)
       .then((response) => {
-        setSuccessMessage("Comment posted successfully!")
+        setSuccessMessage("Comment posted successfully! Refresh to see your comment.")
         setErrorMessage("")
         setComments([...comments, response])
         setCommentBody("")
@@ -73,23 +74,17 @@ const Comments = ({ articleId }) =>{
   return (
     <div>
       <h3>Add a comment:</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="add-comment-form">
         <label htmlFor="comment-body">Enter a comment:</label>
-        <input
-          value={commentBody}
-          id="comment-body"
-          name="new-comment-body"
-          type="text"
-          onChange={(event) => setCommentBody(event.target.value)}
-        />
-        <button type="submit">Add Comment</button>
+        <input value={commentBody} id="comment-body" name="new-comment-body" type="text" onChange={(event) => setCommentBody(event.target.value)} className="comment-input" />
+        <button type="submit" className="comment-submit-button">Add Comment</button>
       </form>
       {successMessage && <p className="success-message">{successMessage}</p>}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <h3 className="comments-header">Comments</h3>
       {comments && (
         <div className="comments-container">
-          {comments.map((comment) => (
+          {comments.map((comment) => comment && ( 
             <div key={comment.comment_id} className="comment">
               <p className="comment-body">{comment.body}</p>
               <p className="comment-votes">Upvotes: {comment.votes}</p>
