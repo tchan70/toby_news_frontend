@@ -3,12 +3,16 @@ import { getArticleById, patchArticleVotesById} from "../utils/api"
 import { useParams } from "react-router-dom"
 import "./css/singleArticle.css"
 import Comments from "./Comments"
+import VoteContext from "./Vote"
+import useVoteHandler from "./VoteHandler"
 
 const SingleArticle = () => {
   const [article, setArticle] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [hasVoted, setHasVoted] = useState(false)
+  const { votes } = useContext(VoteContext)
   let { articleId } = useParams()
+
+  const handleVote = useVoteHandler(setArticle, true)
 
   useEffect(() => {
     Promise.all([getArticleById(articleId)]).then(([article]) => {
@@ -24,30 +28,6 @@ const SingleArticle = () => {
     return date.toLocaleDateString()
   }
 
-  const addUpvote = (articleId) => {
-    if (!hasVoted) {
-      const votes = { inc_votes: 1 }
-      patchArticleVotesById(votes, articleId).then((updatedArticle) => {
-        setArticle((article) =>
-          article.article_id === updatedArticle.article_id ? { ...article, votes: updatedArticle.votes } : article
-        )
-        setHasVoted(true)
-      })
-    }
-  }
-
-  const removeUpvote = (articleId) => {
-    if (!hasVoted) {
-      const votes = { inc_votes: -1 }
-      patchArticleVotesById(votes, articleId).then((updatedArticle) => {
-        setArticle((article) =>
-          article.article_id === updatedArticle.article_id ? { ...article, votes: updatedArticle.votes } : article
-        )
-        setHasVoted(true)
-      })
-    }
-  }
-
   return (
     <div className="article-page">
       <div className="article-body">
@@ -59,8 +39,8 @@ const SingleArticle = () => {
         <p className="article-votes">Upvotes: {article.votes}</p>
         <p className="article-author">Posted by: {article.author}</p>
         <div className="article-actions">
-          <button onClick={() => addUpvote(article.article_id)} disabled={hasVoted}>Upvote</button>
-          <button onClick={() => removeUpvote(article.article_id)} disabled={hasVoted}>Downvote</button>
+        <button onClick={() => handleVote(articleId, 1)} disabled={votes[articleId]}>Upvote</button>
+        <button onClick={() => handleVote(articleId, -1)} disabled={votes[articleId]}>Downvote</button>
         </div>
       </div>
       <hr className="separator" />

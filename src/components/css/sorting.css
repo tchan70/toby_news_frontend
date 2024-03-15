@@ -1,0 +1,24 @@
+.sorting-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background-color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+.sorting-controls select {
+  background-color: #292929;
+  color: #d7dadc;
+  border-radius: 4px;
+  padding: 5px 10px;
+  border: 1px solid #343536;
+}
+
+.sorting-controls select:hover {
+  background-color: #2e2e2e;
+}
+
+.sorting-controls label {
+  color: #d7dadc;
+}
