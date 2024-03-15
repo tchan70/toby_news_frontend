@@ -1,23 +1,25 @@
 # Toby News App
 
-Toby News is a web application built on React using the NC News API. It allows users to view and interact with news articles from various topics.
+## Overview
 
-Visit [https://tobys-news.netlify.app](https://tobys-news.netlify.app/) in your web browser to view the app.
+Toby News App provides a dynamic web interface for users to read, interact with, and discuss a variety of news articles. This React-based application interacts with Toby News API, allowing for actions such as viewing articles by topic, voting on content, and commenting on articles.
 
-## Getting Started
+Experience the live version: [Toby's News Live](https://tobys-news.netlify.app/)
 
-To use the Toby News site, you can follow these steps:
+## Local Installation
+
+To run Toby News App on your local machine, follow these steps:
 
 1. Clone the repository:
 
 ```sh
-git clone https://github.com/adamkow/nc-news
+git clone https://github.com/tchan70/toby_news_frontend
 ```
 
 2. Navigate to the project directory:
 
 ```sh
-cd nc-news
+cd toby_news_frontend
 ```
 
 3. Install dependencies:
@@ -29,8 +31,16 @@ npm install
 4. Start the development server:
 
 ```sh
-npm start
+npm run dev
 ```
+This will launch the app in development mode. Open your browser to http://localhost:5173 to view it.
+
+## Functionalities
+
+- Browse articles by categories.
+- Sort and order articles based on various attributes like date and number of comments.
+- Engage with articles through voting and commenting.
+- Navigate through different topics to filter content.
 
 ## Backend
 
