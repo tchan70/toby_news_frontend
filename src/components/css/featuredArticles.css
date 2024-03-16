@@ -1,0 +1,29 @@
+.featured-articles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.featured-article {
+  background-color: #292929;
+  padding: 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.featured-article h3 {
+  color: #ffffff;
+}
+
+.featured-article p {
+  color: #d7dadc;
+}
+
+.featured-article a {
+  color: #0079d3;
+  text-decoration: none;
+}
+
+.featured-article a:hover {
+  text-decoration: underline;
+}
